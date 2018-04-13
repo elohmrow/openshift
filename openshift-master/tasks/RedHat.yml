@@ -1,0 +1,9 @@
+- name: Include OS-specific variables
+  include_vars: RedHat.yml
+
+- name: Install list of packages
+  yum: name={{item}} state=present
+  with_items: "{{ packages }}"
+  become: yes
+
+- include: common.yml

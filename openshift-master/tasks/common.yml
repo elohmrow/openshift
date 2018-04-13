@@ -1,0 +1,18 @@
+#- name: iptables open 25
+#  command: iptables -I INPUT -p tcp -m tcp --dport 25 -j ACCEPT
+#  become: yes
+# ^ exim does that already
+
+###- name: iptables open port 80
+###  # iptables -I INPUT -p tcp --destination-port 80 -j ACCEPT
+###  iptables:
+###    chain: INPUT
+###    protocol: tcp
+###    destination_port: 80
+###    jump: ACCEPT
+###    state: present
+###  become: yes
+
+- name: add /etc/hosts
+  copy: src=hosts dest=/etc/ mode=0644
+  become: yes

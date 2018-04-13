@@ -1,0 +1,2 @@
+- name: start NetworkManager
+  service: name=NetworkManager state=started become=yes
