@@ -1,15 +1,3 @@
 packages:
-  - epel-release
-  - git
   - wget 
-  - net-tools
   - docker
-  - python-cryptography
-  - pyOpenSSL.x86_64
-  - openssl-devel
-  - python-devel
-  - httpd-tools
-  - NetworkManager
-  - python-passlib 
-  - java-1.8.0-openjdk-headless
-  - "@Development Tools"

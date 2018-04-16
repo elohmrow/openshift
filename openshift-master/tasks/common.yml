@@ -1,7 +1,35 @@
 - name: add /etc/hosts
   copy: src=hosts dest=/etc/ mode=0644
   become: yes
+
+- name: add /etc/sysconfig/docker
+  copy: src=docker dest=/etc/sysconfig/ mode=0644
+  become: yes
+
+- name: add /tmp/get_openshift.sh
+  copy: src=get_openshift.sh dest=/tmp/ mode=0755
+  become: yes
   
+- name: add /usr/local/bin/start_openshift.sh
+  copy: src=start_openshift.sh dest=/usr/local/bin/ mode=0755
+  become: yes
+
+- name: add /etc/systemd/system/openshift.service
+  copy: src=openshift.service dest=/etc/systemd/system/ mode=0755
+  become: yes
+
+- name: add /tmp/set_perms.sh
+  copy: src=set_perms.sh dest=/tmp/ mode=0755
+  become: yes
+
+- name: add /tmp/add_cert_settings.sh
+  copy: src=add_cert_settings.sh dest=/tmp/ mode=0755
+  become: yes
+
+- name: add /tmp/add_router_registry.sh
+  copy: src=add_router_registry.sh dest=/tmp/ mode=0755
+  become: yes
+
 - name: install python
   become: yes
   yum:
@@ -17,3 +45,61 @@
   yum:
     name: ansible
     state: present
+
+- name: download openshift
+  become: yes
+  script: get_openshift.sh
+  args:
+    chdir: /tmp
+
+- name: start openshift
+  become: yes
+  script: start_openshift.sh
+  args:
+    chdir: /usr/local/bin
+
+- name: set perms
+  become: yes
+  script: set_perms.sh
+  args:
+    chdir: /tmp
+
+- name: add cert settings
+  become: yes
+  script: add_cert_settings.sh
+  args:
+    chdir: /tmp
+
+- name: add router / registry
+  become: yes
+  script: add_router_registry.sh
+  args:
+    chdir: /tmp
+
+- name: iptables open port 80
+  # iptables -I INPUT -p tcp --destination-port 80 -j ACCEPT
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 80
+    jump: ACCEPT
+    state: present
+  become: yes
+
+- name: iptables open port 443
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 443
+    jump: ACCEPT
+    state: present
+  become: yes
+
+- name: iptables open port 8443
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 8443
+    jump: ACCEPT
+    state: present
+  become: yes

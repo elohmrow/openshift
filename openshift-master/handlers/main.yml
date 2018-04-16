@@ -1,2 +1,2 @@
-- name: start NetworkManager
-  service: name=NetworkManager state=started become=yes
+- name: restart Docker
+  service: name=docker state=started become=yes
