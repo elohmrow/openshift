@@ -1,3 +1,4 @@
 packages:
   - wget 
   - docker
+  - git

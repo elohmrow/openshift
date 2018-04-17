@@ -22,12 +22,22 @@
   copy: src=set_perms.sh dest=/tmp/ mode=0755
   become: yes
 
-- name: add /tmp/add_cert_settings.sh
-  copy: src=add_cert_settings.sh dest=/tmp/ mode=0755
-  become: yes
-
 - name: add /tmp/add_router_registry.sh
   copy: src=add_router_registry.sh dest=/tmp/ mode=0755
+  become: yes
+
+- name: add /root/.bashrc
+  copy: src=.bashrc dest=/root/ mode=0755
+  become: yes
+
+- name: source /root/.bashrc
+  action: shell source /root/.bashrc
+  become: yes
+  become_method: su
+  become_user: root
+
+- name: add /tmp/add_project.sh
+  copy: src=add_project.sh dest=/tmp/ mode=0755
   become: yes
 
 - name: install python
@@ -64,15 +74,15 @@
   args:
     chdir: /tmp
 
-- name: add cert settings
-  become: yes
-  script: add_cert_settings.sh
-  args:
-    chdir: /tmp
-
 - name: add router / registry
   become: yes
   script: add_router_registry.sh
+  args:
+    chdir: /tmp
+
+- name: add project
+  become: yes
+  script: add_project.sh
   args:
     chdir: /tmp
 
