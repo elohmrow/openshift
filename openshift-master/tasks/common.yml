@@ -5,6 +5,14 @@
 - name: add /etc/sysconfig/docker
   copy: src=docker dest=/etc/sysconfig/ mode=0644
   become: yes
+  #  notify:
+  #  - restart Docker
+
+- name: Ensure docker deamon is running
+  service:
+    name: docker
+    state: started
+  become: yes
 
 - name: add /tmp/get_openshift.sh
   copy: src=get_openshift.sh dest=/tmp/ mode=0755
@@ -39,22 +47,6 @@
 - name: add /tmp/add_project.sh
   copy: src=add_project.sh dest=/tmp/ mode=0755
   become: yes
-
-- name: install python
-  become: yes
-  yum:
-    name: python
-    state: present
- 
-- name: install pip
-  become: yes
-  command: easy_install pip
- 
-- name: install ansible
-  become: yes
-  yum:
-    name: ansible
-    state: present
 
 - name: download openshift
   become: yes
