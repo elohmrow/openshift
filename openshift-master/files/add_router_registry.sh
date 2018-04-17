@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo /usr/local/sbin/oc login localhost:8443 --username=system --password=admin
+sudo /usr/local/sbin/oc login localhost:8443 --username=system --password=admin --insecure-skip-tls-verify
 
 cd /usr/local/sbin
 
